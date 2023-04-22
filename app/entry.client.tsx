@@ -4,17 +4,18 @@
  * For more information, see https://remix.run/docs/en/main/file-conventions/entry.client
  */
 
-import { RemixBrowser } from '@remix-run/react'
-import { startTransition, StrictMode } from 'react'
-import { hydrateRoot } from 'react-dom/client'
+import { RemixBrowser } from "@remix-run/react";
+import { startTransition, StrictMode } from "react";
+import { hydrateRoot } from "react-dom/client";
+import env from "./env";
 
 async function prepareApp() {
-  if (process.env.NODE_ENV === 'development') {
-    const { worker } = await import('./mocks/browser')
-    return worker.start()
+  if (env.NODE_ENV === "development" && env.MSW_ENABLED_IN_DEVELOPMENT) {
+    const { worker } = await import("./mocks/browser");
+    return worker.start();
   }
 
-  return Promise.resolve()
+  return Promise.resolve();
 }
 
 prepareApp().then(() => {
@@ -24,6 +25,6 @@ prepareApp().then(() => {
       <StrictMode>
         <RemixBrowser />
       </StrictMode>
-    )
-  })
-})
+    );
+  });
+});
