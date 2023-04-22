@@ -1,3 +1,4 @@
+import { json } from "@remix-run/node";
 import {
   Links,
   LiveReload,
@@ -5,9 +6,16 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-} from '@remix-run/react'
+  useLoaderData,
+} from "@remix-run/react";
+
+export async function loader() {
+  return json({ ENV: { ...process.env } });
+}
 
 export default function App() {
+  const data = useLoaderData<{ ENV: typeof process.env }>();
+
   return (
     <html lang="en">
       <head>
@@ -15,6 +23,13 @@ export default function App() {
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <Meta />
         <Links />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.process = ${JSON.stringify({
+              env: data.ENV,
+            })}`,
+          }}
+        />
       </head>
       <body>
         <Outlet />
@@ -23,5 +38,5 @@ export default function App() {
         <LiveReload />
       </body>
     </html>
-  )
+  );
 }
