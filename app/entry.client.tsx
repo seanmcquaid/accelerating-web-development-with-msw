@@ -11,8 +11,8 @@ import env from "./env";
 
 async function prepareApp() {
   if (env.NODE_ENV === "development" && env.MSW_ENABLED_IN_DEVELOPMENT) {
-    const { worker } = await import("./mocks/browser");
-    return worker.start();
+    const worker = await import("./mocks/worker");
+    return worker.default.start();
   }
 
   return Promise.resolve();

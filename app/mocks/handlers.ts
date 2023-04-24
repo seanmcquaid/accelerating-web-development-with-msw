@@ -1,6 +1,6 @@
 import { rest } from "msw";
 
-export const handlers = [
+const handlers = [
   rest.get("https://jsonplaceholder.typicode.com/posts", (req, res, ctx) => {
     return res(
       ctx.json([
@@ -24,3 +24,5 @@ export const handlers = [
     );
   }),
 ];
+
+export default handlers;
