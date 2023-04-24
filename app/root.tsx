@@ -8,12 +8,21 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from "@remix-run/react";
+import {
+  QueryClient,
+  QueryClientProvider,
+  Hydrate,
+} from "@tanstack/react-query";
+import { useState } from "react";
+import { useDehydratedState } from "use-dehydrated-state";
 
 export async function loader() {
   return json({ ENV: { ...process.env } });
 }
 
 export default function App() {
+  const [queryClient] = useState(() => new QueryClient());
+  const dehydratedState = useDehydratedState();
   const data = useLoaderData<{ ENV: typeof process.env }>();
 
   return (
@@ -31,12 +40,16 @@ export default function App() {
           }}
         />
       </head>
-      <body>
-        <Outlet />
-        <ScrollRestoration />
-        <Scripts />
-        <LiveReload />
-      </body>
+      <QueryClientProvider client={queryClient}>
+        <Hydrate state={dehydratedState}>
+          <body>
+            <Outlet />
+            <ScrollRestoration />
+            <Scripts />
+            <LiveReload />
+          </body>
+        </Hydrate>
+      </QueryClientProvider>
     </html>
   );
 }
