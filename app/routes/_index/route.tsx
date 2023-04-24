@@ -1,6 +1,6 @@
 import { Link, type V2_MetaFunction } from "@remix-run/react";
 import { useQuery } from "@tanstack/react-query";
-import type Post from "~/types/Post";
+import postsService from "~/services/postsService";
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: "Remix + MSW" }];
@@ -9,10 +9,7 @@ export const meta: V2_MetaFunction = () => {
 export default function HomePage() {
   const { data } = useQuery({
     queryKey: ["getPosts"],
-    queryFn: () =>
-      fetch("https://jsonplaceholder.typicode.com/posts").then((res) =>
-        res.json()
-      ) as Promise<Post[]>,
+    queryFn: () => postsService.getPosts(),
   });
 
   return (
@@ -20,7 +17,7 @@ export default function HomePage() {
       <h1>Hey Remix Conf!</h1>
       <p>
         Below you'll see a list of posts from the JSONPlaceholder API that we
-        are calling on the client.
+        are calling on the client wtih React Query.
       </p>
       <ul>
         {data?.map((post) => (

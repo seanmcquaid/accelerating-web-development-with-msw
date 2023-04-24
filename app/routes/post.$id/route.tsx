@@ -1,35 +1,19 @@
 import type { LoaderFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
-import { useLoaderData, type V2_MetaFunction } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
+import postsService from "~/services/postsService";
 import type Post from "~/types/Post";
 import { postSchema } from "~/types/Post";
-
-export const meta: V2_MetaFunction = () => {
-  return [{ title: "Remix + MSW" }];
-};
 
 export const loader: LoaderFunction = async ({ params }) => {
   if (!params.id) {
     throw new Error("You need to provide a Post ID!");
   }
 
-  const response = await fetch(
-    `https://jsonplaceholder.typicode.com/posts/${params.id}`
-  );
-
-  if (!response.ok) {
-    throw new Error(
-      `Status Code : ${response.status} - ${response.statusText}`
-    );
-  }
-
-  const data = (await response.json()) as Post;
+  const data = await postsService.getPostById(params.id);
 
   const validatedData = postSchema.parse(data);
 
-  return json({
-    post: validatedData,
-  });
+  return { post: validatedData };
 };
 
 export default function PostDetailsPage() {
