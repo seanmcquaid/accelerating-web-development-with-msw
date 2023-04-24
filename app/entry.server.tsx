@@ -10,14 +10,13 @@ import { Response } from "@remix-run/node";
 import { RemixServer } from "@remix-run/react";
 import isbot from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
-import { startApiMocks } from "./mocks/server";
-import { handlers } from "./mocks/handlers";
 import env from "./env";
+import server from "./mocks/server";
 
 const ABORT_DELAY = 5_000;
 
 if (env.NODE_ENV === "development" && env.MSW_ENABLED_IN_DEVELOPMENT) {
-  startApiMocks(handlers);
+  server.listen();
 }
 
 export default function handleRequest(

@@ -1,7 +1,4 @@
-import { setupServer } from "msw/node";
-import { handlers } from "./mocks/handlers";
-
-const server = setupServer(...handlers);
+import server from "./mocks/server";
 
 beforeEach(() => server.listen());
 afterEach(() => server.resetHandlers());

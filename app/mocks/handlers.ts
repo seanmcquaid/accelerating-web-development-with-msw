@@ -1,10 +1,26 @@
-import { rest } from 'msw'
+import { rest } from "msw";
 
 export const handlers = [
-  rest.get('/greeting', (req, res, ctx) => {
-    return res(ctx.text('Hello world!'))
+  rest.get("https://jsonplaceholder.typicode.com/posts", (req, res, ctx) => {
+    return res(
+      ctx.json([
+        {
+          id: 1,
+          title: "My Post",
+          body: "This is my post",
+          userId: 1,
+        },
+      ])
+    );
   }),
-  rest.get('https://example.com/user', (req, res, ctx) => {
-    return res(ctx.json({ name: 'Remix Conf 2023!' }))
+  rest.get("https://jsonplaceholder.typicode.com/posts/1", (req, res, ctx) => {
+    return res(
+      ctx.json({
+        id: 1,
+        title: "My Post",
+        body: "This is my post",
+        userId: 1,
+      })
+    );
   }),
-]
+];

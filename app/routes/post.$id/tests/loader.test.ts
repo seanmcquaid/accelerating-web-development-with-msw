@@ -1,24 +1,27 @@
 import type { LoaderArgs } from "@remix-run/node";
 import { loader } from "../route";
 import type { Params } from "@remix-run/react";
-import postsService from "~/services/postsService";
-import type { MockedFunction } from "vitest";
 import { ZodError } from "zod";
-
-vi.mock("~/services/postsService");
-
-const mockGetPostById = postsService.getPostById as MockedFunction<
-  typeof postsService.getPostById
->;
+import server from "~/mocks/server";
+import { rest } from "msw";
 
 describe("Post Details Loader", () => {
   it("Throws an error if the returned JSON does not match our schema", async () => {
-    mockGetPostById.mockResolvedValueOnce({
-      id: "",
-      title: "My Post",
-      body: "This is my post",
-      userId: 1,
-    } as any);
+    server.use(
+      rest.get(
+        "https://jsonplaceholder.typicode.com/posts/1",
+        (req, res, ctx) => {
+          return res(
+            ctx.json({
+              id: "1",
+              title: "My Post",
+              body: "This is my post",
+              userId: 1,
+            })
+          );
+        }
+      )
+    );
     try {
       await loader({
         params: { id: "1" } as Params,
@@ -28,12 +31,6 @@ describe("Post Details Loader", () => {
     }
   });
   it("Successfully returns the JSON for our post if the ID is valid and the JSON matches our schema", async () => {
-    mockGetPostById.mockResolvedValueOnce({
-      id: 1,
-      title: "My Post",
-      body: "This is my post",
-      userId: 1,
-    });
     const result = await loader({
       params: { id: "1" } as Params,
     } as LoaderArgs);
