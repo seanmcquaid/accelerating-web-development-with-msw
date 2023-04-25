@@ -14,7 +14,7 @@ export default function HomePage() {
 
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
-      <h1>Hey Remix Conf!</h1>
+      <h1>Hello Remix Conf!</h1>
       <p>
         Below you'll see a list of posts from the JSONPlaceholder API that we
         are calling on the client wtih React Query.
