@@ -2,8 +2,8 @@ import { z } from "zod";
 
 const envSchema = z.object({
   MSW_ENABLED_IN_DEVELOPMENT: z
-    .enum(["true", "false"])
-    .transform((value) => value === "true")
+    .string()
+    .transform((val) => Boolean(JSON.parse(JSON.stringify(val))))
     .optional(),
   NODE_ENV: z.enum(["development", "production", "test"]),
 });
