@@ -17,7 +17,7 @@ export default function HomePage() {
       <h1>Hello Remix Conf!</h1>
       <p>
         Below you'll see a list of posts from the JSONPlaceholder API that we
-        are calling on the client wtih React Query.
+        are calling on the client with React Query.
       </p>
       <ul>
         {data?.map((post) => (
