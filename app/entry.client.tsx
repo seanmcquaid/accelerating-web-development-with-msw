@@ -7,7 +7,7 @@
 import { RemixBrowser } from "@remix-run/react";
 import { startTransition, StrictMode } from "react";
 import { hydrateRoot } from "react-dom/client";
-import env from "./env";
+import env from "./env.client";
 
 async function prepareApp() {
   if (env.NODE_ENV === "development" && env.MSW_ENABLED_IN_DEVELOPMENT) {

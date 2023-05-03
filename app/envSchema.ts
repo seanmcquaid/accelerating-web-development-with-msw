@@ -8,8 +8,4 @@ const envSchema = z.object({
   NODE_ENV: z.enum(["development", "production", "test"]),
 });
 
-const env = envSchema.parse(
-  typeof window === "undefined" ? process.env : window.process.env
-);
-
-export default env;
+export default envSchema;

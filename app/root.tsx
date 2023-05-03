@@ -15,7 +15,7 @@ import {
 } from "@tanstack/react-query";
 import { useState } from "react";
 import { useDehydratedState } from "use-dehydrated-state";
-import env from "./env";
+import env from "./env.server";
 
 export async function loader() {
   return json({
@@ -42,6 +42,7 @@ export default function App() {
             __html: `window.process = ${JSON.stringify({
               env: {
                 MSW_ENABLED_IN_DEVELOPMENT: data.ENV.MSW_ENABLED_IN_DEVELOPMENT,
+                NODE_ENV: data.ENV.NODE_ENV,
               },
             })}`,
           }}
