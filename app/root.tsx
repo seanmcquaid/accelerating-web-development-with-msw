@@ -15,15 +15,20 @@ import {
 } from "@tanstack/react-query";
 import { useState } from "react";
 import { useDehydratedState } from "use-dehydrated-state";
+import env from "./env";
 
 export async function loader() {
-  return json({ ENV: { ...process.env } });
+  return json({
+    ENV: {
+      ...env,
+    },
+  });
 }
 
 export default function App() {
   const [queryClient] = useState(() => new QueryClient());
   const dehydratedState = useDehydratedState();
-  const data = useLoaderData<{ ENV: typeof process.env }>();
+  const data = useLoaderData<{ ENV: typeof env }>();
 
   return (
     <html lang="en">
@@ -35,7 +40,9 @@ export default function App() {
         <script
           dangerouslySetInnerHTML={{
             __html: `window.process = ${JSON.stringify({
-              env: data.ENV,
+              env: {
+                MSW_ENABLED_IN_DEVELOPMENT: data.ENV.MSW_ENABLED_IN_DEVELOPMENT,
+              },
             })}`,
           }}
         />
