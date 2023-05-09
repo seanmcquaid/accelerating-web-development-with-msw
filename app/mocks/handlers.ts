@@ -6,19 +6,19 @@ const handlers = [
       ctx.json([
         {
           id: 1,
-          title: "This is AWESOME!!!",
-          body: "It's hard to believe how simple and powerful MSW is!",
+          title: "My Post",
+          body: "This is my post",
           userId: 1,
         },
       ])
     );
   }),
-  rest.get("https://jsonplaceholder.typicode.com/posts/1", (_, res, ctx) => {
+  rest.get("https://jsonplaceholder.typicode.com/posts/*", (_, res, ctx) => {
     return res(
       ctx.json({
         id: 1,
-        title: "This is AWESOME!!!",
-        body: "It's hard to believe how simple and powerful MSW is!",
+        title: "My Post",
+        body: "This is my post",
         userId: 1,
       })
     );
